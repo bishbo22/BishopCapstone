@@ -1,3 +1,9 @@
+///Please use this code to see the average pace of over 500 runs from my personal running watch over the past 5 years.
+///The pace class is almost complete, but check the comments for future methods in each of the classes.
+///Use the terminal and write "GarminActivities.csv" as args[0] to have the code succesfully run.
+
+///If you have your own Garmin watch, go to the Garmin website and export the csv file with all the activity data!
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
