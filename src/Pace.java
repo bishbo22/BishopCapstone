@@ -5,10 +5,13 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Pace {
+
+    //add the new list of paces to the Pace csv
     public static void updatePaceFile(FileInputStream myFile, FileOutputStream file, Scanner fileReader, PrintWriter fileWriter) {
         fileReader = new Scanner(myFile);
         fileWriter = new PrintWriter(file);
 
+        //read through the main input file and parse out the paces from the "Running" activities, avoiding empty fields as well
         while (fileReader.hasNextLine()) {
             String data = fileReader.nextLine();
             String[] arrOfData = data.split(",");
@@ -27,6 +30,7 @@ public class Pace {
         fileWriter.close();
     }
 
+    //use the new Pace file to read the new paces and calculate the average pace of the entered runs from the typed-in file
     public static String averagePace(){
 
         String averagePace = null;
@@ -44,6 +48,7 @@ public class Pace {
 
         Scanner paceReader = new Scanner(paceFile);
 
+        //sort through the array list by splitting up the commas, removing quoatation marks,and separating the minutes and seconds
         String data = paceReader.nextLine();
         String[] arrOfData = data.split(",");
         boolean status = true;
@@ -70,12 +75,22 @@ public class Pace {
                 }
             }
         }
-        seconds += minutes%counter*60;
+
+        //calculate the average
+        seconds += minutes*60;
         seconds = seconds/counter;
-        minutes = minutes/counter;
-        minutes += seconds/60;
+        minutes = seconds/60;
         seconds = seconds%60;
-        averagePace = minutes + ":" + seconds;
+
+        //print the average and check to see if it is a single digit second value so that the appropriate leading zero can be added
+        if (seconds < 10){
+            averagePace = minutes + ":0" + seconds;
+        }
+        else {
+            averagePace = minutes + ":" + seconds;
+        }
         return averagePace;
     }
+
+    //method for suggesting a 5% pace increase based on existing paces
 }
