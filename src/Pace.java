@@ -7,18 +7,27 @@ import java.util.Scanner;
 public class Pace {
 
     //add the new list of paces to the Pace csv
-    public static void updatePaceFile(FileInputStream myFile, FileOutputStream file, Scanner fileReader, PrintWriter fileWriter) {
+    public static void updatePaceFile(FileInputStream myFile, Scanner fileReader) {
         fileReader = new Scanner(myFile);
-        fileWriter = new PrintWriter(file);
+        FileOutputStream paces = null;
 
+        //set the destination of PACE information, try-catch set up for future errors that may occur when I open up the code for user interface
+        try {
+            paces = new FileOutputStream("Pace.csv");
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Could not open output file");
+            System.exit(1);
+        }
+        PrintWriter fileWriterPaces = new PrintWriter(paces);
         //read through the main input file and parse out the paces from the "Running" activities, avoiding empty fields as well
         while (fileReader.hasNextLine()) {
             String data = fileReader.nextLine();
             String[] arrOfData = data.split(",");
             if (arrOfData[0].equals("Running")) {
                 try {
-                    fileWriter.print(arrOfData[12]);
-                    fileWriter.print(",");
+                    fileWriterPaces.print(arrOfData[12]);
+                    fileWriterPaces.print(",");
                 } catch (NumberFormatException e) {
                     System.out.println("There is an error with the running data in this line.");
                 }
@@ -26,8 +35,8 @@ public class Pace {
         }
 
         fileReader.close();
-        fileWriter.flush();
-        fileWriter.close();
+        fileWriterPaces.flush();
+        fileWriterPaces.close();
     }
 
     //use the new Pace file to read the new paces and calculate the average pace of the entered runs from the typed-in file
@@ -48,7 +57,7 @@ public class Pace {
 
         Scanner paceReader = new Scanner(paceFile);
 
-        //sort through the array list by splitting up the commas, removing quoatation marks,and separating the minutes and seconds
+        //sort through the array list by splitting up the commas, removing quotation marks,and separating the minutes and seconds
         String data = paceReader.nextLine();
         String[] arrOfData = data.split(",");
         boolean status = true;
