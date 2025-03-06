@@ -6,42 +6,63 @@
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FileInputStream myFile = null;
-
+        //String fileName = args[0];
+        String fileName = "src/Practice.csv";
         //open file when the program is called in the terminal, catches incorrect file names (for testing code enter "GarminActivities.csv"
         try {
-            myFile = new FileInputStream(args[0]);
+            myFile = new FileInputStream(fileName); //take command terminal input
         } catch (FileNotFoundException e) {
             System.out.println("Could not open input file");
             System.exit(1);
         }
 
-        //set up the file writing variables so that the classes that need it can write to the Pace file, which stores all pertinent paces over time
-        Scanner fileReader = new Scanner(myFile);
-
         //store pace into its own file
-        Pace.updatePaceFile(myFile,fileReader);
+        Pace.updatePaceFile(myFile);
 
         //run the feature for calculating average pace in min:sec
         System.out.println("The average pace of these runs is " + Pace.averagePace() + ".");
 
         //create an object for the HeartRate class and the use of its methods
-        HeartRate hr = new HeartRate();
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        HeartRate.updateHRFile(myFile);
+
+        //find max HR with recursive search of the original csv
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        Scanner fileReader = new Scanner(myFile);
+        System.out.println("The max HR out of these runs is: " + HeartRate.findMaxHR(fileReader,0));
 
         //create an object for the Consistency class and the use of its methods
-        Consistency consistency = new Consistency();
+        //Consistency consistency = new Consistency();
 
         //create an object for the Goals class and the use of its methods
-        Goals goals = new Goals();
+        //Goals goals = new Goals();
 
         //store mileage in its own file
-        Mileage.updateMileageFile(myFile,fileReader);
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        Mileage.updateMileageFile(myFile);
 
+        //run the feature for calculating average mileage in miles.decimals
+        System.out.println("The total mileage of these runs is " + Mileage.totalMileage() + ".");
     }
 }
