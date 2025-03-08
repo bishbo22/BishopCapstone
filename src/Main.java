@@ -7,7 +7,7 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -64,5 +64,8 @@ public class Main {
 
         //run the feature for calculating average mileage in miles.decimals
         System.out.println("The total mileage of these runs is " + Mileage.totalMileage() + ".");
+
+        //organize the mileage document from low to high
+        Mileage.lowToHigh();
     }
 }

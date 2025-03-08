@@ -2,7 +2,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.util.Scanner;
+import java.util.*;
 
 public class Mileage {
 
@@ -80,12 +80,36 @@ public class Mileage {
         String totalMileage = String.valueOf(Math.ceil(miles * 100.0) / 100.0);
         return totalMileage;
     }
-}
 
-        //calculate the average
+    //find the highest mileage of a run from Mileage.csv by sorting the csv file from lowest to highest
+    public static void lowToHigh() {
+        FileInputStream mileages = null;
+        //open this file
+        try {
+            mileages = new FileInputStream("Mileage.csv");
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        Scanner fileReader = new Scanner(mileages);
+        String data = fileReader.nextLine();
+        String[] arrOfData = data.split(",");
+        int i = 0;
+        ArrayList<String> arrListOfData = new ArrayList<>();
+        while (i != arrOfData.length) {
+            arrListOfData.add(arrOfData[i]);
+            i += 1;
+        }
+        Collections.sort(arrListOfData);
+        String last = arrListOfData.getLast().replace("\"", "");
+        System.out.print("The highest mileage run was " + last + " miles.");
+        fileReader.close();
+    }
+    //calculate the average
 
-
-        //print the average and check to see if it is a single digit second value so that the appropriate leading zero can be added
-
+    //print the average and check to see if it is a single digit second value so that the appropriate leading zero can be added
 
     //method for reporting the mileage and the total number of runs that were done in the past week (if the user is using it on a weekly basis)
+}
+
+
