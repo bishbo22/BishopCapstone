@@ -94,14 +94,15 @@ public class Mileage {
         Scanner fileReader = new Scanner(mileages);
         String data = fileReader.nextLine();
         String[] arrOfData = data.split(",");
+        LinkedList doubles = new LinkedList();
         int i = 0;
-        ArrayList<String> arrListOfData = new ArrayList<>();
         while (i != arrOfData.length) {
-            arrListOfData.add(arrOfData[i]);
+            doubles.append(Double.parseDouble(arrOfData[i].replace("\"","")));
             i += 1;
         }
-        Collections.sort(arrListOfData);
-        String last = arrListOfData.getLast().replace("\"", "");
+        MileageComparator comparingMileage = new MileageComparator();
+        comparingMileage.sort(doubles);
+        double last = doubles.head.data;
         System.out.print("The highest mileage run was " + last + " miles.");
         fileReader.close();
     }
