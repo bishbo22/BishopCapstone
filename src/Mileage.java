@@ -82,7 +82,7 @@ public class Mileage {
     }
 
     //find the highest mileage of a run from Mileage.csv by sorting the csv file from lowest to highest
-    public static void lowToHigh() {
+    public static void highToLow() {
         FileInputStream mileages = null;
         //open this file
         try {
@@ -102,8 +102,8 @@ public class Mileage {
         }
         MileageComparator comparingMileage = new MileageComparator();
         comparingMileage.sort(doubles);
-        double last = doubles.head.data;
-        System.out.print("The highest mileage run was " + last + " miles.");
+        double first = doubles.head.data;
+        System.out.print("The highest mileage run was " + first + " miles.");
         fileReader.close();
     }
     //calculate the average

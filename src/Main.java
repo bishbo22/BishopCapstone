@@ -66,6 +66,6 @@ public class Main {
         System.out.println("The total mileage of these runs is " + Mileage.totalMileage() + ".");
 
         //organize the mileage document from low to high
-        Mileage.lowToHigh();
+        Mileage.highToLow();
     }
 }
