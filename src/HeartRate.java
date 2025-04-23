@@ -27,9 +27,7 @@ public class HeartRate {
                 try {
                     fileWriterHeartRate.print(arrOfData[7]);
                     fileWriterHeartRate.print(",");
-                } catch (NumberFormatException e) {
-                    System.out.println("There is an error with the running data in this line.");
-                }
+                } catch (NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
             }
         }
         fileReader.close();
@@ -37,7 +35,7 @@ public class HeartRate {
         fileWriterHeartRate.close();
     }
 
-    //find max heart rate with recursion
+    //find max average heart rate with recursion
     public static int findMaxHR(Scanner fileReader,int maxHR){
         if (!fileReader.hasNextLine()){ //base case, no lines left to check
             return maxHR;
@@ -52,14 +50,31 @@ public class HeartRate {
                     if (curr > maxHR){
                         maxHR = curr;
                     }
-                }catch(NumberFormatException e) {
-                    System.out.println("Invalid Heart Rate Data.");
-                }
+                }catch(NumberFormatException e) {} //System.out.println("Invalid Heart Rate Data.");
         }
         return findMaxHR(fileReader,maxHR);
     }
 
     //method for calculating the average heart rate on all running efforts
-
-    //method for seeing the average heart rate of certain distances (0-3 miles, 3.1-5 miles, and 5.1 and greater)
+    public static int averageHR(Scanner fileReader) {
+        int total = 0;
+        int counter = 0;
+        String data;
+        while (fileReader.hasNextLine()) {
+            data = fileReader.nextLine();
+            String[] arrOfData = data.split(",");
+            if (arrOfData[0].equals("Running")) {
+                try {
+                    String timeArray = arrOfData[7].replace("\"", "");
+                    int HR = Integer.parseInt(timeArray);
+                    total += HR;
+                    counter++;
+                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
+            }
+        }
+        if (counter == 0){
+            return 0;
+        }
+        return total/counter;
+    }
 }

@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         FileInputStream myFile = null;
         //String fileName = args[0];
-        String fileName = "src/GarminActivities.csv";
+        String fileName = "src/GarminActivities.csv"; //Practice
         //open file when the program is called in the terminal, catches incorrect file names (for testing code enter "GarminActivities.csv"
         try {
             myFile = new FileInputStream(fileName); //take command terminal input
@@ -46,6 +46,16 @@ public class Main {
         }
         Scanner fileReader = new Scanner(myFile);
         System.out.println("The max Average HR for one run out of them all is: " + HeartRate.findMaxHR(fileReader,0));
+
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        fileReader = new Scanner(myFile);
+        //print the average of the average heart rates across all the runs
+        System.out.println("The average heart rate of these runs is: " + HeartRate.averageHR(fileReader) + ".");
 
         //create an object for the Consistency class and the use of its methods
         //Consistency consistency = new Consistency();

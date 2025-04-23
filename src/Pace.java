@@ -13,7 +13,8 @@ public class Pace {
         //set the destination of PACE information, try-catch set up for future errors that may occur when I open up the code for user interface
         try {
             paces = new FileOutputStream("Pace.csv");
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             System.out.println("Could not open output file");
             System.exit(1);
         }
@@ -26,9 +27,7 @@ public class Pace {
                 try {
                     fileWriterPaces.print(arrOfData[12]);
                     fileWriterPaces.print(",");
-                } catch (NumberFormatException e) {
-                    System.out.println("There is an error with the running data in this line.");
-                }
+                } catch (NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
             }
         }
         fileReader.close();
@@ -76,9 +75,7 @@ public class Pace {
                     minutes += minute;
                     seconds += second;
                     counter++;
-                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    System.out.println("There is an error with the running data in this line.");
-                }
+                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
             }
         }
 
@@ -96,6 +93,4 @@ public class Pace {
         }
         return averagePace;
     }
-
-    //method for suggesting a 5% pace increase
 }

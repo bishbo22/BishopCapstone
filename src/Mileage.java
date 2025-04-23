@@ -27,9 +27,7 @@ public class Mileage {
                 try {
                     fileWriterMileages.print(arrOfData[4]);
                     fileWriterMileages.print(",");
-                } catch (NumberFormatException e) {
-                    System.out.println("There is an error with the running data in this line.");
-                }
+                } catch (NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
             }
         }
         fileReader.close();
@@ -72,9 +70,7 @@ public class Mileage {
                     double mile = Double.parseDouble(timeArray);
                     miles += mile;
                     counter++;
-                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    System.out.println("There is an error with the running data in this line.");
-                }
+                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
             }
         }
         String totalMileage = String.valueOf(Math.ceil(miles * 100.0) / 100.0);
@@ -106,7 +102,28 @@ public class Mileage {
         System.out.print("The highest mileage run was " + first + " miles.");
         fileReader.close();
     }
-    //calculate the average
+    //calculate the average, needs to be started!!!
+    public static int averageMileage(Scanner fileReader) {
+        int total = 0;
+        int counter = 0;
+        String data;
+        while (fileReader.hasNextLine()) {
+            data = fileReader.nextLine();
+            String[] arrOfData = data.split(",");
+            if (arrOfData[0].equals("Running")) {
+                try {
+                    String timeArray = arrOfData[7].replace("\"", "");
+                    int HR = Integer.parseInt(timeArray);
+                    total += HR;
+                    counter++;
+                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
+            }
+        }
+        if (counter == 0){
+            return 0;
+        }
+        return total/counter;
+    }
 
     //print the average and check to see if it is a single digit second value so that the appropriate leading zero can be added
 
