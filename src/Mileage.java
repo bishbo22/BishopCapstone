@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class Mileage {
-
     //add the new list of mileages to the Mileage.csv
     public static void updateMileageFile(FileInputStream myFile) {
         Scanner fileReader = new Scanner(myFile);
@@ -52,7 +51,7 @@ public class Mileage {
 
         Scanner mileageReader = new Scanner(mileageFile);
 
-        //sort through the array list by splitting up the commas, removing quotation marks,and separating the minutes and seconds
+        //sort through the array list by splitting up the commas, removing quotation marks,and separating the miles and decimals
         String data = mileageReader.nextLine();
         String[] arrOfData = data.split(",");
         boolean status = true;
@@ -99,35 +98,38 @@ public class Mileage {
         MileageComparator comparingMileage = new MileageComparator();
         comparingMileage.sort(doubles);
         double first = doubles.head.data;
-        System.out.print("The highest mileage run was " + first + " miles.");
+        System.out.println("The highest mileage run was " + first + " miles.");
         fileReader.close();
     }
-    //calculate the average, needs to be started!!!
-    public static int averageMileage(Scanner fileReader) {
-        int total = 0;
+
+    //calculate the average mileage of the added runs, needs to be started!!!
+    public static Double averageMileage(Scanner fileReader) {
+        double miles = 0;
         int counter = 0;
-        String data;
-        while (fileReader.hasNextLine()) {
-            data = fileReader.nextLine();
+        //sort through the array list by splitting up the commas, removing quotation marks,and separating the miles and decimals
+        while (fileReader.hasNext()) {
+            String data = fileReader.nextLine();
             String[] arrOfData = data.split(",");
-            if (arrOfData[0].equals("Running")) {
+            boolean status = true;
+            char[] dats = new char[arrOfData[4].length()];
+            for (int j = 0; j < dats.length; j++) {
+                dats[j] = arrOfData[4].charAt(j);
+                if (dats[j] != '.') {
+                    status = false;
+                }
+            }
+            if (!status) {
                 try {
-                    String timeArray = arrOfData[7].replace("\"", "");
-                    int HR = Integer.parseInt(timeArray);
-                    total += HR;
+                    String timeArray = arrOfData[4].replace("\"", "");
+                    double mile = Double.parseDouble(timeArray);
+                    miles += mile;
                     counter++;
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
             }
         }
-        if (counter == 0){
-            return 0;
-        }
-        return total/counter;
+        double totalMileage = Math.ceil(miles * 100.0) / 100.0;
+        return totalMileage/counter;
     }
-
-    //print the average and check to see if it is a single digit second value so that the appropriate leading zero can be added
-
-    //method for reporting the mileage and the total number of runs that were done in the past week (if the user is using it on a weekly basis)
 }
 
 

@@ -93,4 +93,54 @@ public class Pace {
         }
         return averagePace;
     }
+
+    //average pace from the new file
+    public static String averagePaceFromNewFile(Scanner fileReader) {
+        String averagePace = null;
+        int minutes = 0;
+        int seconds = 0;
+        int counter = 0;
+        //sort through the array list by splitting up the commas, removing quotation marks,and separating the minutes and seconds
+        while (fileReader.hasNextLine()) {
+            String data = fileReader.nextLine();
+            String[] arrOfData = data.split(",");
+            boolean status = true;
+
+            if (arrOfData[0].equals("Running")){
+                char[] dats = new char[arrOfData[12].length()];
+                for (int j = 0; j < dats.length; j++) {
+                    dats[j] = arrOfData[12].charAt(j);
+                    if (dats[j] != ':' || dats[j] == '-') {
+                        status = false;
+                    }
+                }
+                if (!status) {
+                    try {
+                        String timeArray = arrOfData[12].replace("\"", "");
+                        String[] newTimeArray = timeArray.split(":");
+                        int minute = Integer.parseInt(newTimeArray[0]);
+                        int second = Integer.parseInt(newTimeArray[1]);
+                        minutes += minute;
+                        seconds += second;
+                        counter++;
+                    } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
+                }
+            }
+        }
+
+        //calculate the average
+        seconds += minutes * 60;
+        seconds = seconds / counter;
+        minutes = seconds / 60;
+        seconds = seconds % 60;
+
+        //print the average and check to see if it is a single digit second value so that the appropriate leading zero can be added
+        if (seconds < 10) {
+            averagePace = minutes + ":0" + seconds;
+        } else {
+            averagePace = minutes + ":" + seconds;
+        }
+        fileReader.close();
+        return averagePace;
+    }
 }

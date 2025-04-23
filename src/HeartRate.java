@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
-//average heart rates
+
 public class HeartRate {
 
     //method for creating a mutable file of heart rate data for the subsequent methods' use

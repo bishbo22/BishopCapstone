@@ -28,6 +28,16 @@ public class Main {
         //run the feature for calculating average pace in min:sec
         System.out.println("The average pace of these runs is " + Pace.averagePace() + ".");
 
+        try {
+            myFile = new FileInputStream("src/GarminActivities.csv"); //take command terminal input
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        Scanner fileReader = new Scanner(myFile);
+        //find the average pace for the added file
+        System.out.println("The average pace of the added runs is: " + Pace.averagePaceFromNewFile(fileReader) + ".");
+
         //create an object for the HeartRate class and the use of its methods
         try{
             myFile = new FileInputStream(fileName);
@@ -44,7 +54,7 @@ public class Main {
             System.out.println("Could not open input file");
             System.exit(1);
         }
-        Scanner fileReader = new Scanner(myFile);
+        fileReader = new Scanner(myFile);
         System.out.println("The max Average HR for one run out of them all is: " + HeartRate.findMaxHR(fileReader,0));
 
         try{
@@ -77,5 +87,38 @@ public class Main {
 
         //organize the mileage document from low to high
         Mileage.highToLow();
+
+        try {
+            myFile = new FileInputStream(fileName); //take command terminal input
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        fileReader = new Scanner(myFile);
+        //find the average mileage for the added file
+        System.out.println("The average mileage for the added file is: " + String.format("%.2f",Mileage.averageMileage(fileReader)) + ".");
+
+        //print the number of runs
+        System.out.println("The total number of runs is: " + howManyRuns(fileName) + ".");
+    }
+
+    public static int howManyRuns(String fileName){
+        FileInputStream myFile = null;
+        int counter = 0;
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        Scanner fileReader = new Scanner(myFile);
+        while(fileReader.hasNextLine()){
+            String data = fileReader.nextLine();
+            String[] arrOfData = data.split(",");
+            if (arrOfData[0].equals("Running")){
+                counter++;
+            }
+        }
+        return counter;
     }
 }
