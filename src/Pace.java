@@ -13,7 +13,7 @@ public class Pace {
         FileOutputStream paces = null;
         //set the destination of PACE information, try-catch set up for future errors that may occur when I open up the code for user interface
         try {
-            paces = new FileOutputStream("Pace.csv");
+            paces = new FileOutputStream("Pace.csv",true);
         }
         catch (FileNotFoundException e) {
             System.out.println("Could not open output file");

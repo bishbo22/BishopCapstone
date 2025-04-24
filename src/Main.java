@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         FileInputStream myFile = null;
         //String fileName = args[0];
-        String fileName = "src/GarminActivities.csv"; //
+        String fileName = "src/Week2.csv";
         //open file when the program is called in the terminal, catches incorrect file names (for testing code enter "GarminActivities.csv"
         try {
             myFile = new FileInputStream(fileName); //take command terminal input

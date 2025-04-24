@@ -12,12 +12,12 @@ public class HeartRate {
         FileOutputStream heartRates = null;
         //set the destination of MILEAGE information, try-catch set up for future errors that may occur when I open up the code for user interface
         try {
-            heartRates = new FileOutputStream("HeartRate.csv");
+            heartRates = new FileOutputStream("HeartRate.csv",true);
         } catch (FileNotFoundException e) {
             System.out.println("Could not open output file");
             System.exit(1);
         }
-        PrintWriter fileWriterHeartRate = new PrintWriter(heartRates);
+        PrintWriter fileWriterHeartRate = new PrintWriter(heartRates,true);
         //read through the main input file and parse out the mileages from the "Running" activities, avoiding empty fields as well
         while (fileReader.hasNextLine()) {
             String data = fileReader.nextLine();

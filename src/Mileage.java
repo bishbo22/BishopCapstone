@@ -14,7 +14,7 @@ public class Mileage {
         FileOutputStream mileages = null;
         //set the destination of MILEAGE information, try-catch set up for future errors that may occur when I open up the code for user interface
         try {
-            mileages = new FileOutputStream("Mileage.csv");
+            mileages = new FileOutputStream("Mileage.csv",true);
         }
         catch (FileNotFoundException e) {
             System.out.println("Could not open output file");
