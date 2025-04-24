@@ -29,7 +29,7 @@ public class Main {
         System.out.println("The average pace of these runs is " + Pace.averagePace() + ".");
 
         try {
-            myFile = new FileInputStream("src/GarminActivities.csv"); //take command terminal input
+            myFile = new FileInputStream(fileName); //take command terminal input
         } catch (FileNotFoundException e) {
             System.out.println("Could not open input file");
             System.exit(1);

@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Pace {
 
@@ -22,7 +23,7 @@ public class Pace {
         //read through the main input file and parse out the paces from the "Running" activities, avoiding empty fields as well
         while (fileReader.hasNextLine()) {
             String data = fileReader.nextLine();
-            String[] arrOfData = data.split(",");
+            String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             if (arrOfData[0].equals("Running")) {
                 try {
                     fileWriterPaces.print(arrOfData[12]);
@@ -56,7 +57,7 @@ public class Pace {
         //sort through the array list by splitting up the commas, removing quotation marks,and separating the minutes and seconds
         String data = paceReader.nextLine();
         paceReader.close();
-        String[] arrOfData = data.split(",");
+        String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
         for (int i = 0; i < arrOfData.length; i++) {
             boolean status = true;
             char[] dats = new char[arrOfData[i].length()];
@@ -104,14 +105,13 @@ public class Pace {
         //sort through the array list by splitting up the commas, removing quotation marks,and separating the minutes and seconds
         while (fileReader.hasNextLine()) {
             String data = fileReader.nextLine();
-            String[] arrOfData = data.split(",");
+            String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             boolean status = false;
 
             if (arrOfData[0].equals("Running")){
                 char[] dats = new char[arrOfData[12].length()];
                 for (int j = 0; j < dats.length; j++) {
-                    dats[j] = arrOfData[12].charAt(j);
-                    if (dats[j] == ':') {
+                    if (arrOfData[12].charAt(j) == ':') {
                         status = true;
                     }
                 }
@@ -124,7 +124,7 @@ public class Pace {
                         minutes += minute;
                         seconds += second;
                         counter++;
-                    } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
+                    } catch (ArrayIndexOutOfBoundsException | NumberFormatException _) {} //System.out.println("There is an error with the running data in this line.");
                 }
             }
         }

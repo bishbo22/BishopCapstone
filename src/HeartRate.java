@@ -13,8 +13,7 @@ public class HeartRate {
         //set the destination of MILEAGE information, try-catch set up for future errors that may occur when I open up the code for user interface
         try {
             heartRates = new FileOutputStream("HeartRate.csv");
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("Could not open output file");
             System.exit(1);
         }
@@ -27,7 +26,8 @@ public class HeartRate {
                 try {
                     fileWriterHeartRate.print(arrOfData[7]);
                     fileWriterHeartRate.print(",");
-                } catch (NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
+                } catch (NumberFormatException e) {
+                } //System.out.println("There is an error with the running data in this line.");
             }
         }
         fileReader.close();
@@ -36,23 +36,24 @@ public class HeartRate {
     }
 
     //find max average heart rate with recursion
-    public static int findMaxHR(Scanner fileReader,int maxHR){
-        if (!fileReader.hasNextLine()){ //base case, no lines left to check
+    public static int findMaxHR(Scanner fileReader, int maxHR) {
+        if (!fileReader.hasNextLine()) { //base case, no lines left to check
             return maxHR;
         }
         String data = fileReader.nextLine();
         String[] arrOfData = data.split(",");
         int curr;
-        if (arrOfData[0].equals("Running")){
-                try{
-                    arrOfData[7]=arrOfData[7].replace("\"", "");
-                    curr = Integer.parseInt(arrOfData[7]);
-                    if (curr > maxHR){
-                        maxHR = curr;
-                    }
-                }catch(NumberFormatException e) {} //System.out.println("Invalid Heart Rate Data.");
+        if (arrOfData[0].equals("Running")) {
+            try {
+                arrOfData[7] = arrOfData[7].replace("\"", "");
+                curr = Integer.parseInt(arrOfData[7]);
+                if (curr > maxHR) {
+                    maxHR = curr;
+                }
+            } catch (NumberFormatException e) {
+            } //System.out.println("Invalid Heart Rate Data.");
         }
-        return findMaxHR(fileReader,maxHR);
+        return findMaxHR(fileReader, maxHR);
     }
 
     //method for calculating the average heart rate on all running efforts
@@ -62,24 +63,25 @@ public class HeartRate {
         String data;
         while (fileReader.hasNextLine()) {
             data = fileReader.nextLine();
-            String[] arrOfData = data.split(",");
+            String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             if (arrOfData[0].equals("Running")) {
                 try {
                     String timeArray = arrOfData[7].replace("\"", "");
                     int HR = Integer.parseInt(timeArray);
                     total += HR;
                     counter++;
-                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
+                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+                } //System.out.println("There is an error with the running data in this line.");
             }
         }
-        if (counter == 0){
+        if (counter == 0) {
             return 0;
         }
-        return total/counter;
+        return total / counter;
     }
 
     //calculate average of the average heart rates for 0-3 miles
-    public static int averageHRrange(Scanner fileReader,Stack<Integer> range) {
+    public static int averageHRrange(Scanner fileReader, Stack<Integer> range) {
         int total = 0;
         int counter = 0;
         int counter2 = 0;
@@ -87,7 +89,7 @@ public class HeartRate {
         int indexValue = range.popNode().data;
         while (fileReader.hasNextLine()) {
             data = fileReader.nextLine();
-            String[] arrOfData = data.split(",");
+            String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             counter++;
             try {
                 if (indexValue == counter) {
@@ -101,9 +103,9 @@ public class HeartRate {
                 break;
             } //System.out.println("There is an error with the running data in this line.");
         }
-        if (counter2 == 0){
+        if (counter2 == 0) {
             return 0;
         }
-        return total/counter2;
+        return total / counter2;
     }
 }

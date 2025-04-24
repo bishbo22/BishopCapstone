@@ -24,7 +24,7 @@ public class Mileage {
         //read through the main input file and parse out the mileages from the "Running" activities, avoiding empty fields as well
         while (fileReader.hasNextLine()) {
             String data = fileReader.nextLine();
-            String[] arrOfData = data.split(",");
+            String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             if (arrOfData[0].equals("Running")) {
                 try {
                     fileWriterMileages.print(arrOfData[4]);
@@ -53,7 +53,7 @@ public class Mileage {
 
         //sort through the array list by splitting up the commas, removing quotation marks,and separating the miles and decimals
         String data = mileageReader.nextLine();
-        String[] arrOfData = data.split(",");
+        String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
         boolean status = true;
         for (int i = 0; i < arrOfData.length; i++) {
             char[] dats = new char[arrOfData[i].length()];
@@ -66,7 +66,7 @@ public class Mileage {
             if (!status) {
                 try {
                     String timeArray = arrOfData[i].replace("\"", "");
-                    double mile = Double.parseDouble(timeArray);
+                    double mile = Double.parseDouble(timeArray.replace(",", ""));
                     miles += mile;
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
             }
@@ -87,7 +87,7 @@ public class Mileage {
         }
         Scanner fileReader = new Scanner(mileages);
         String data = fileReader.nextLine();
-        String[] arrOfData = data.split(",");
+        String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
         LinkedList<Double> doubles = new LinkedList<>();
         int i = 0;
         while (i != arrOfData.length) {
@@ -107,10 +107,10 @@ public class Mileage {
         int counter = 0;
         int counter2 = 0;
         //sort through the array list by splitting up the commas, removing quotation marks,and separating the miles and decimals
-        while (fileReader.hasNext()) {
+        while (fileReader.hasNextLine()) {
             counter2++;
             String data = fileReader.nextLine();
-            String[] arrOfData = data.split(",");
+            String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             boolean status = true;
             char[] dats = new char[arrOfData[4].length()];
             if (arrOfData[0].equals("Running")) {
