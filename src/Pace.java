@@ -38,7 +38,7 @@ public class Pace {
     //use the new Pace file to read the new paces and calculate the average pace of the entered runs from the typed-in file
     public static String averagePace() {
 
-        String averagePace = null;
+        String averagePace;
         FileInputStream paceFile = null;
         int minutes = 0;
         int seconds = 0;
@@ -57,12 +57,12 @@ public class Pace {
         String data = paceReader.nextLine();
         paceReader.close();
         String[] arrOfData = data.split(",");
-        boolean status = true;
         for (int i = 0; i < arrOfData.length; i++) {
+            boolean status = true;
             char[] dats = new char[arrOfData[i].length()];
             for (int j = 0; j < dats.length; j++) {
                 dats[j] = arrOfData[i].charAt(j);
-                if (dats[j] != ':' || dats[j] == '-') {
+                if (dats[j] == ':') {
                     status = false;
                 }
             }
@@ -79,6 +79,7 @@ public class Pace {
             }
         }
 
+        if (counter == 0) return "0:00"; // prevent division by zero
         //calculate the average
         seconds += minutes * 60;
         seconds = seconds / counter;
@@ -96,7 +97,7 @@ public class Pace {
 
     //average pace from the new file
     public static String averagePaceFromNewFile(Scanner fileReader) {
-        String averagePace = null;
+        String averagePace;
         int minutes = 0;
         int seconds = 0;
         int counter = 0;
@@ -104,17 +105,17 @@ public class Pace {
         while (fileReader.hasNextLine()) {
             String data = fileReader.nextLine();
             String[] arrOfData = data.split(",");
-            boolean status = true;
+            boolean status = false;
 
             if (arrOfData[0].equals("Running")){
                 char[] dats = new char[arrOfData[12].length()];
                 for (int j = 0; j < dats.length; j++) {
                     dats[j] = arrOfData[12].charAt(j);
-                    if (dats[j] != ':' || dats[j] == '-') {
-                        status = false;
+                    if (dats[j] == ':') {
+                        status = true;
                     }
                 }
-                if (!status) {
+                if (status) {
                     try {
                         String timeArray = arrOfData[12].replace("\"", "");
                         String[] newTimeArray = timeArray.split(":");
@@ -127,7 +128,7 @@ public class Pace {
                 }
             }
         }
-
+        if (counter == 0) return "0:00";
         //calculate the average
         seconds += minutes * 60;
         seconds = seconds / counter;

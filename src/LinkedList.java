@@ -1,42 +1,42 @@
-public class LinkedList {
-    public Node head;
+public class LinkedList<T> {
+    public Node<T> head;
 
-    //default constructor
+    // Default constructor
     public LinkedList() {
         head = null;
     }
 
-    //parametrized constructor
-    public LinkedList(Node h) {
+    // Parameterized constructor
+    public LinkedList(Node<T> h) {
         head = h;
     }
 
-    //append a node to the linked list, worked on during in-class activity
-    public void append(double num) {
+    // Append a node to the linked list
+    public void append(T data) {
         if (head == null) {
-            head = new Node(num);
+            head = new Node<>(data);
         } else {
-            Node curr = head;
+            Node<T> curr = head;
             while (curr.next != null) {
                 curr = curr.next;
             }
-            curr.next = new Node(num, null);
+            curr.next = new Node<>(data, null);
         }
     }
 
-    //deep copy constructor from the in-class practice for future linked list work
-    public Node copy_list(Node head) {
-        if (head == null) {
+    // Deep copy constructor
+    public Node<T> copyList(Node<T> node) {
+        if (node == null) {
             return null;
         }
-        Node newNode = new Node(head.data);
-        newNode.next = copy_list(head.next);
+        Node<T> newNode = new Node<>(node.data);
+        newNode.next = copyList(node.next);
         return newNode;
     }
 
-    //printing the linked list for debugging the test file
+    // Print the linked list
     public void printList() {
-        Node curr = head;
+        Node<T> curr = head;
         while (curr != null) {
             System.out.print(curr.data + " -> ");
             curr = curr.next;

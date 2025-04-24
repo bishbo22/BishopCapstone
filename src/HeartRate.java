@@ -77,4 +77,33 @@ public class HeartRate {
         }
         return total/counter;
     }
+
+    //calculate average of the average heart rates for 0-3 miles
+    public static int averageHRrange(Scanner fileReader,Stack<Integer> range) {
+        int total = 0;
+        int counter = 0;
+        int counter2 = 0;
+        String data;
+        int indexValue = range.popNode().data;
+        while (fileReader.hasNextLine()) {
+            data = fileReader.nextLine();
+            String[] arrOfData = data.split(",");
+            counter++;
+            try {
+                if (indexValue == counter) {
+                    String timeArray = arrOfData[7].replace("\"", "");
+                    int HR = Integer.parseInt(timeArray);
+                    total += HR;
+                    counter2++;
+                    indexValue = range.popNode().data;
+                }
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException | NullPointerException e) {
+                break;
+            } //System.out.println("There is an error with the running data in this line.");
+        }
+        if (counter2 == 0){
+            return 0;
+        }
+        return total/counter2;
+    }
 }

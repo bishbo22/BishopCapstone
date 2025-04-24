@@ -5,6 +5,9 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class Mileage {
+    public static Stack<Integer> zeroToThree = new Stack<>();
+    public static Stack<Integer> threeToSix = new Stack<>();
+    public static Stack<Integer> sixAndUp = new Stack<>();
     //add the new list of mileages to the Mileage.csv
     public static void updateMileageFile(FileInputStream myFile) {
         Scanner fileReader = new Scanner(myFile);
@@ -37,11 +40,8 @@ public class Mileage {
     //method for compiling all mileage in total for a quick print of how many miles have been run in a date range
     public static String totalMileage() {
 
-        String averageMileage = null;
         FileInputStream mileageFile = null;
         double miles = 0;
-        int counter = 0;
-
         try {
             mileageFile = new FileInputStream("Mileage.csv");
         } catch (FileNotFoundException e) {
@@ -68,7 +68,6 @@ public class Mileage {
                     String timeArray = arrOfData[i].replace("\"", "");
                     double mile = Double.parseDouble(timeArray);
                     miles += mile;
-                    counter++;
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
             }
         }
@@ -89,13 +88,13 @@ public class Mileage {
         Scanner fileReader = new Scanner(mileages);
         String data = fileReader.nextLine();
         String[] arrOfData = data.split(",");
-        LinkedList doubles = new LinkedList();
+        LinkedList<Double> doubles = new LinkedList<>();
         int i = 0;
         while (i != arrOfData.length) {
             doubles.append(Double.parseDouble(arrOfData[i].replace("\"","")));
             i += 1;
         }
-        MileageComparator comparingMileage = new MileageComparator();
+        MileageComparator<Double> comparingMileage = new MileageComparator<>();
         comparingMileage.sort(doubles);
         double first = doubles.head.data;
         System.out.println("The highest mileage run was " + first + " miles.");
@@ -106,25 +105,39 @@ public class Mileage {
     public static Double averageMileage(Scanner fileReader) {
         double miles = 0;
         int counter = 0;
+        int counter2 = 0;
         //sort through the array list by splitting up the commas, removing quotation marks,and separating the miles and decimals
         while (fileReader.hasNext()) {
+            counter2++;
             String data = fileReader.nextLine();
             String[] arrOfData = data.split(",");
             boolean status = true;
             char[] dats = new char[arrOfData[4].length()];
-            for (int j = 0; j < dats.length; j++) {
-                dats[j] = arrOfData[4].charAt(j);
-                if (dats[j] != '.') {
-                    status = false;
+            if (arrOfData[0].equals("Running")) {
+                for (int j = 0; j < dats.length; j++) {
+                    dats[j] = arrOfData[4].charAt(j);
+                    if (dats[j] != '.') {
+                        status = false;
+                    }
                 }
-            }
-            if (!status) {
-                try {
-                    String timeArray = arrOfData[4].replace("\"", "");
-                    double mile = Double.parseDouble(timeArray);
-                    miles += mile;
-                    counter++;
-                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
+                if (!status) {
+                    try {
+                        String timeArray = arrOfData[4].replace("\"", "");
+                        double mile = Double.parseDouble(timeArray);
+                        Node<Integer> curr = new Node<>(counter2,null);
+                        if (mile < 3.00){
+                            zeroToThree.push(curr.data);
+                        }
+                        else if (mile >= 3.00 && mile < 6.00){
+                            threeToSix.push(curr.data);
+                        }
+                        else if (mile >= 6.00){
+                            sixAndUp.push(curr.data);
+                        }
+                        miles += mile;
+                        counter++;
+                    } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {} //System.out.println("There is an error with the running data in this line.");
+                }
             }
         }
         double totalMileage = Math.ceil(miles * 100.0) / 100.0;

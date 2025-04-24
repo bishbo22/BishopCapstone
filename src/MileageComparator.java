@@ -1,50 +1,59 @@
 import java.util.Comparator;
 
-// implementing a comparator interface
-public class MileageComparator implements Comparator<Double> {
-    //the compare method takes the two parameters of games and sees if the first score is smaller (-1), the same (0), or larger (1)
+public class MileageComparator<T extends Comparable<T>> implements Comparator<T> {
+
     @Override
-    public int compare(Double firstMileage,Double secondMileage){
-        return Double.compare(firstMileage,secondMileage);
+    public int compare(T firstMileage, T secondMileage) {
+        return firstMileage.compareTo(secondMileage);
     }
 
-    // the sort method is for sorting the list of games by critic score using the parameters provided for the linked list and how many times the loop needs to be executed
-    public void sort(LinkedList doubles) {
-        if (doubles.head == null || doubles.head.next == null) {
-            return;
+    public void sort(LinkedList<T> list) {
+        list.head = mergeSort(list.head);
+    }
+
+    public Node<T> mergeSort(Node<T> head) {
+        if (head == null || head.next == null) {
+            return head;
         }
 
-        boolean swapped;
-        do {
-            swapped = false;
-            Node prev = null;
-            Node curr = doubles.head;
+        Node<T> middle = getMiddle(head);
+        Node<T> nextOfMiddle = middle.next;
+        middle.next = null;
 
-            while (curr != null && curr.next != null) {
-                Node next = curr.next;
+        Node<T> left = mergeSort(head);
+        Node<T> right = mergeSort(nextOfMiddle);
 
-                if (compare(curr.data, next.data) < 0) { // Compare properly
-                    // Swap nodes correctly
-                    if (prev != null) {
-                        prev.next = next;
-                    } else {
-                        doubles.head = next;
-                    }
-                    curr.next = next.next;
-                    next.next = curr;
-                    prev = next;
-                    swapped = true;
-                } else {
-                    prev = curr;
-                    curr = curr.next;
-                }
-            }
-        } while (swapped); // Ensure multiple passes until fully sorted
+        return sortedMerge(left, right);
     }
 
-    // this swap method takes the current node and swaps it with the next one depending on the swapping condition in the sort method, taking in a linked list of type game and next of type node
-    public void swap(Node curr,Node next){
-        curr.next = next.next;
-        next.next = curr;
+    public Node<T> sortedMerge(Node<T> a, Node<T> b) {
+        if (a == null) return b;
+        if (b == null) return a;
+
+        Node<T> result;
+
+        if (compare(a.data, b.data) > 0) {
+            result = a;
+            result.next = sortedMerge(a.next, b);
+        } else {
+            result = b;
+            result.next = sortedMerge(a, b.next);
+        }
+
+        return result;
+    }
+
+    public Node<T> getMiddle(Node<T> head) {
+        if (head == null) return head;
+
+        Node<T> slow = head;
+        Node<T> fast = head.next;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow;
     }
 }

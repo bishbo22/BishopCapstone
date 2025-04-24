@@ -1,16 +1,16 @@
 //foundation for linked list class and usage of that class
-public class Node{
-    double data;
-    Node next=null;
+public class Node<T> {
+    T data;
+    Node<T> next = null;
 
-    //default constructor
-    public Node(double i){
-        data=i;
+    // Default constructor
+    public Node(T data) {
+        this.data = data;
     }
 
-    //parametrized constructor
-    public Node(double i, Node n){
-        data=i;
-        next=n;
+    // Parameterized constructor
+    public Node(T data, Node<T> next) {
+        this.data = data;
+        this.next = next;
     }
 }

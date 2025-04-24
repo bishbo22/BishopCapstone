@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         FileInputStream myFile = null;
         //String fileName = args[0];
-        String fileName = "src/GarminActivities.csv"; //Practice
+        String fileName = "src/GarminActivities.csv"; //
         //open file when the program is called in the terminal, catches incorrect file names (for testing code enter "GarminActivities.csv"
         try {
             myFile = new FileInputStream(fileName); //take command terminal input
@@ -100,6 +100,47 @@ public class Main {
 
         //print the number of runs
         System.out.println("The total number of runs is: " + howManyRuns(fileName) + ".");
+
+        //testing stacks
+        Mileage.zeroToThree.reverse();
+        //Mileage.zeroToThree.print();
+        Mileage.threeToSix.reverse();
+        //Mileage.threeToSix.print();
+        Mileage.sixAndUp.reverse();
+        //Mileage.sixAndUp.print();
+
+        //calculate the average heart rate of 0-3 mile runs
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        fileReader = new Scanner(myFile);
+        System.out.println("The average heart rate of less-than-three mile efforts is: " + HeartRate.averageHRrange(fileReader,Mileage.zeroToThree) + ".");
+        fileReader.close();
+
+        //calculate the average heart rate of 3-6 mile runs
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        fileReader = new Scanner(myFile);
+        System.out.println("The average heart rate of 3-6 mile efforts is: " + HeartRate.averageHRrange(fileReader,Mileage.threeToSix) + ".");
+        fileReader.close();
+
+        //calculate the average heart rate of 6+ mile runs
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        fileReader = new Scanner(myFile);
+        System.out.println("The average heart rate of 6-or-more mile efforts is: " + HeartRate.averageHRrange(fileReader,Mileage.sixAndUp) + ".");
+        fileReader.close();
     }
 
     public static int howManyRuns(String fileName){
