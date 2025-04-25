@@ -88,8 +88,8 @@ public class Main {
             System.exit(1);
         }
         fileReader = new Scanner(myFile);
-        String averageMileageNew = String.format("%.2f",Mileage.averageMileage(fileReader));
-        System.out.println("The average mileage for the added file is: " + averageMileageNew + ".");
+        Double averageMileageNew = Mileage.averageMileage(fileReader);
+        System.out.println("The average mileage for the added file is: " + String.format("%.2f",averageMileageNew) + ".");
 
         //reverse the order of the stacks so that they can be emptied appropriately
         Mileage.zeroToThree.reverse();
@@ -155,7 +155,23 @@ public class Main {
         fileReader.close();
 
         //Report what the next seven runs should be based on this recent week's data
-
+        System.out.println();
+        System.out.println("Here are your goals for the future based on your recent runs:");
+        System.out.println("*If a target says \"0\" or \"0.0,\" then there were no runs that fit that category.*");
+        System.out.println("EASY RUNS (0-3 miles): Target Average Heart Rate: " + averageHRnew03*0.95 + "BPM");
+        System.out.println("MEDIUM RUNS (3-6 miles): Target Average Heart Rate: " + averageHRnew36*0.95 + "BPM");
+        System.out.println("EASY RUNS (6+ miles): Target Average Heart Rate: " + averageHRnew60*0.95 + "BPM");
+        System.out.println();
+        System.out.println("Target Weekly Mileage: " + String.format("%.2f",averageMileageNew*6*1.1) + " miles");
+        String newpace = paceNew.replace("\"","");
+        String[] paceIncreased = newpace.split(":");
+        double minutes = Integer.parseInt(paceIncreased[0]);
+        double seconds = Integer.parseInt(paceIncreased[1]);
+        double totalTime = (minutes * 60) + seconds;
+        totalTime = totalTime * 0.99;
+        int minute = (int) Math.floor(totalTime/60);
+        int second = (int) Math.floor(totalTime%60);
+        System.out.println("By the end of this future set of runs, you target average pace is: " + minute + ":" + second);
     }
 
     public static int howManyRuns(String fileName){

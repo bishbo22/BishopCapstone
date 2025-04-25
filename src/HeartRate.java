@@ -86,7 +86,10 @@ public class HeartRate {
         int counter = 0;
         int counter2 = 0;
         String data;
-        int indexValue = range.popNode().data;
+        int indexValue;
+        try {
+            indexValue = range.popNode().data;
+        } catch(NullPointerException e) {return 0;}
         while (fileReader.hasNextLine()) {
             data = fileReader.nextLine();
             String[] arrOfData = data.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
