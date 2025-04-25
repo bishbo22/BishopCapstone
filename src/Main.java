@@ -12,6 +12,11 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         //ask for the file name to be added
+
+        /// Choose which method you want to test it: 1- command line argument input, 2- string written in the code, 3- keyboard input
+        /// Use "src/Week1.csv", "src/Week2.csv", and "src/Week3.csv" for the week-over-week updating
+        /// Use "src/GarminActivities.csv" for general feature testing
+
         //String fileName = args[0];
         //String fileName = "src/Week2.csv";
         Scanner kb = new Scanner(System.in);
@@ -160,7 +165,7 @@ public class Main {
         System.out.println("*If a target says \"0\" or \"0.0,\" then there were no runs that fit that category.*");
         System.out.println("EASY RUNS (0-3 miles): Target Average Heart Rate: " + averageHRnew03*0.95 + "BPM");
         System.out.println("MEDIUM RUNS (3-6 miles): Target Average Heart Rate: " + averageHRnew36*0.95 + "BPM");
-        System.out.println("EASY RUNS (6+ miles): Target Average Heart Rate: " + averageHRnew60*0.95 + "BPM");
+        System.out.println("HARD RUNS (6+ miles): Target Average Heart Rate: " + averageHRnew60*0.95 + "BPM");
         System.out.println();
         System.out.println("Target Weekly Mileage: " + String.format("%.2f",averageMileageNew*6*1.1) + " miles");
         String newpace = paceNew.replace("\"","");
