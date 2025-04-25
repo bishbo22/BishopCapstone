@@ -11,34 +11,29 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        FileInputStream myFile = null;
+        //ask for the file name to be added
         //String fileName = args[0];
-        String fileName = "src/Week2.csv";
-        //open file when the program is called in the terminal, catches incorrect file names (for testing code enter "GarminActivities.csv"
-        try {
-            myFile = new FileInputStream(fileName); //take command terminal input
-        } catch (FileNotFoundException e) {
-            System.out.println("Could not open input file");
-            System.exit(1);
-        }
+        //String fileName = "src/Week2.csv";
+        Scanner kb = new Scanner(System.in);
+        System.out.print("Type the name of the file you'd like to add: ");
+        String fileName = kb.next();
+        System.out.println();
+
+        //initialize the file being read
+        FileInputStream myFile = null;
+
+        /// Storing data
 
         //store pace into its own file
-        Pace.updatePaceFile(myFile);
-
-        //run the feature for calculating average pace in min:sec
-        System.out.println("The average pace of these runs is " + Pace.averagePace() + ".");
-
         try {
             myFile = new FileInputStream(fileName); //take command terminal input
         } catch (FileNotFoundException e) {
             System.out.println("Could not open input file");
             System.exit(1);
         }
-        Scanner fileReader = new Scanner(myFile);
-        //find the average pace for the added file
-        System.out.println("The average pace of the added runs is: " + Pace.averagePaceFromNewFile(fileReader) + ".");
+        Pace.updatePaceFile(myFile);
 
-        //create an object for the HeartRate class and the use of its methods
+        //store heart rate into its own file
         try{
             myFile = new FileInputStream(fileName);
         }catch(FileNotFoundException e){
@@ -47,33 +42,7 @@ public class Main {
         }
         HeartRate.updateHRFile(myFile);
 
-        //find max HR with recursive search of the original csv
-        try{
-            myFile = new FileInputStream(fileName);
-        }catch(FileNotFoundException e){
-            System.out.println("Could not open input file");
-            System.exit(1);
-        }
-        fileReader = new Scanner(myFile);
-        System.out.println("The max Average HR for one run out of them all is: " + HeartRate.findMaxHR(fileReader,0));
-
-        try{
-            myFile = new FileInputStream(fileName);
-        }catch(FileNotFoundException e){
-            System.out.println("Could not open input file");
-            System.exit(1);
-        }
-        fileReader = new Scanner(myFile);
-        //print the average of the average heart rates across all the runs
-        System.out.println("The average heart rate of these runs is: " + HeartRate.averageHR(fileReader) + ".");
-
-        //create an object for the Consistency class and the use of its methods
-        //Consistency consistency = new Consistency();
-
-        //create an object for the Goals class and the use of its methods
-        //Goals goals = new Goals();
-
-        //store mileage in its own file
+        //store mileage into its own file
         try{
             myFile = new FileInputStream(fileName);
         }catch(FileNotFoundException e){
@@ -82,12 +51,36 @@ public class Main {
         }
         Mileage.updateMileageFile(myFile);
 
-        //run the feature for calculating average mileage in miles.decimals
-        System.out.println("The total mileage of these runs is " + Mileage.totalMileage() + ".");
+        //print the number of runs
+        System.out.println("The total number of runs from this file is: " + howManyRuns(fileName) + ".");
 
-        //organize the mileage document from low to high
+        //show the highest mileage run with merge sorting
         Mileage.highToLow();
 
+        /// Pace
+
+        //run the feature for calculating average pace in min:sec for all (present and past) runs
+        String paceOverall = Pace.averagePace();
+        System.out.println("The average pace of these runs is " + paceOverall + ".");
+
+        //find the average pace of just the added file
+        try {
+            myFile = new FileInputStream(fileName); //take command terminal input
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        Scanner fileReader = new Scanner(myFile);
+        String paceNew = Pace.averagePaceFromNewFile(fileReader);
+        System.out.println("The average pace of the added runs is: " + paceNew + ".");
+
+        /// Mileage
+
+        //run the feature for calculating total mileage in miles.decimals
+        String mileageOverall = Mileage.totalMileage();
+        System.out.println("The total mileage of these runs is " + mileageOverall + ".");
+
+        //find the average mileage for the added file
         try {
             myFile = new FileInputStream(fileName); //take command terminal input
         } catch (FileNotFoundException e) {
@@ -95,19 +88,37 @@ public class Main {
             System.exit(1);
         }
         fileReader = new Scanner(myFile);
-        //find the average mileage for the added file
-        System.out.println("The average mileage for the added file is: " + String.format("%.2f",Mileage.averageMileage(fileReader)) + ".");
+        String averageMileageNew = String.format("%.2f",Mileage.averageMileage(fileReader));
+        System.out.println("The average mileage for the added file is: " + averageMileageNew + ".");
 
-        //print the number of runs
-        System.out.println("The total number of runs is: " + howManyRuns(fileName) + ".");
-
-        //testing stacks
+        //reverse the order of the stacks so that they can be emptied appropriately
         Mileage.zeroToThree.reverse();
-        //Mileage.zeroToThree.print();
         Mileage.threeToSix.reverse();
-        //Mileage.threeToSix.print();
         Mileage.sixAndUp.reverse();
-        //Mileage.sixAndUp.print();
+
+        /// Heart Rate
+
+        //find max average HR with recursive search of the added file
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        fileReader = new Scanner(myFile);
+        int maxHRnew = HeartRate.findMaxHR(fileReader,0);
+        System.out.println("The max average HR for the added runs is: " + maxHRnew);
+
+        //print the average of the average heart rates from the added file
+        try{
+            myFile = new FileInputStream(fileName);
+        }catch(FileNotFoundException e){
+            System.out.println("Could not open input file");
+            System.exit(1);
+        }
+        fileReader = new Scanner(myFile);
+        int averageHRnew = HeartRate.averageHR(fileReader);
+        System.out.println("The average heart rate of the added runs is: " + averageHRnew + ".");
 
         //calculate the average heart rate of 0-3 mile runs
         try{
@@ -117,8 +128,8 @@ public class Main {
             System.exit(1);
         }
         fileReader = new Scanner(myFile);
-        System.out.println("The average heart rate of less-than-three mile efforts is: " + HeartRate.averageHRrange(fileReader,Mileage.zeroToThree) + ".");
-        fileReader.close();
+        int averageHRnew03 = HeartRate.averageHRrange(fileReader,Mileage.zeroToThree);
+        System.out.println("The average heart rate of less-than-three mile efforts is: " + averageHRnew03 + ".");
 
         //calculate the average heart rate of 3-6 mile runs
         try{
@@ -128,8 +139,8 @@ public class Main {
             System.exit(1);
         }
         fileReader = new Scanner(myFile);
-        System.out.println("The average heart rate of 3-6 mile efforts is: " + HeartRate.averageHRrange(fileReader,Mileage.threeToSix) + ".");
-        fileReader.close();
+        int averageHRnew36 = HeartRate.averageHRrange(fileReader,Mileage.threeToSix);
+        System.out.println("The average heart rate of 3-6 mile efforts is: " + averageHRnew36 + ".");
 
         //calculate the average heart rate of 6+ mile runs
         try{
@@ -139,8 +150,12 @@ public class Main {
             System.exit(1);
         }
         fileReader = new Scanner(myFile);
-        System.out.println("The average heart rate of 6-or-more mile efforts is: " + HeartRate.averageHRrange(fileReader,Mileage.sixAndUp) + ".");
+        int averageHRnew60 = HeartRate.averageHRrange(fileReader,Mileage.sixAndUp);
+        System.out.println("The average heart rate of 6-or-more mile efforts is: " + averageHRnew60 + ".");
         fileReader.close();
+
+        //Report what the next seven runs should be based on this recent week's data
+
     }
 
     public static int howManyRuns(String fileName){

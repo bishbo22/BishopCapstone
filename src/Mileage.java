@@ -97,11 +97,11 @@ public class Mileage {
         MileageComparator<Double> comparingMileage = new MileageComparator<>();
         comparingMileage.sort(doubles);
         double first = doubles.head.data;
-        System.out.println("The highest mileage run was " + first + " miles.");
+        System.out.println("The highest mileage run in your history is " + first + " miles.");
         fileReader.close();
     }
 
-    //calculate the average mileage of the added runs, needs to be started!!!
+    //calculate the average mileage of the added runs
     public static Double averageMileage(Scanner fileReader) {
         double miles = 0;
         int counter = 0;
